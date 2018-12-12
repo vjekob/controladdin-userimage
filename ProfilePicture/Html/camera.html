@@ -1,0 +1,53 @@
+<style>
+    div.vjeko-com.overlay {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        background-color: rgba(0, 0, 0, 0.67);
+    }
+
+    div.vjeko-com.popup {
+        box-shadow: 3px 3px 6px -4px rgba(0, 0, 0, 0.47), -3px 3px 6px -4px rgba(0, 0, 0, 0.47);
+    }
+
+    canvas#vjeko-com-canvas {
+        display: none;
+    }
+
+    video#vjeko-com-video {
+        border-radius: 200px;
+        border: 5px solid #2bb458;
+        background-color: rgba(43, 180, 88, 0.33);
+    }
+
+    h1,
+    h2 {
+        font-family: 'Segoe UI Light', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 300;
+        margin-bottom: 1em;
+        color: white;
+        text-shadow: 2px 2px rgba(0, 0, 0, 0.67);
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+</style>
+<canvas id="vjeko-com-canvas"></canvas>
+<div class="vjeko-com overlay" id="vjeko-com-overlay">
+    <div class="vjeko-com popup">
+        <h1>Click the picture to take the photo</h1>
+        <h2>(or click anywhere else to return to NAV)</h2>
+        <video id="vjeko-com-video" width="400" height="400" autoplay></video>
+    </div>
+</div>
