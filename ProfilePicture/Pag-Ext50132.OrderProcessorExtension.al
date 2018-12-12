@@ -1,4 +1,4 @@
-pageextension 50132 "Order Processor Extension" extends "SO Processor Activities"
+pageextension 50132 "O365 Activities Extension" extends "O365 Activities"
 {
     layout
     {
@@ -6,6 +6,8 @@ pageextension 50132 "Order Processor Extension" extends "SO Processor Activities
         {
             usercontrol(ProfilePicture; "Profile Picture")
             {
+                ApplicationArea = All;
+
                 trigger SavePicture(Picture: Text);
                 var
                     UserSetup: Record "User Setup";
@@ -26,7 +28,7 @@ pageextension 50132 "Order Processor Extension" extends "SO Processor Activities
                     InStr: InStream;
                     Picture: Text;
                 begin
-                    if(not UserSetup.Get(UserId)) or(not UserSetup."User Picture".HasValue()) then
+                    if (not UserSetup.Get(UserId)) or (not UserSetup."User Picture".HasValue()) then
                         exit;
                     UserSetup.CalcFields("User Picture");
                     UserSetup."User Picture".CreateInStream(InStr);

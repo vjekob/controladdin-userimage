@@ -1,17 +1,14 @@
 (function ($) {
-    var currentPic = null;
     var doc = window.top.document;
-    var userIcon = doc.querySelector("div.userimage-clip > img.userimage");
+    var hasPic = false;
 
     function applyPicture(data, skipSend) {
-        userIcon.src = data;
-        userIcon.width = 32;
-        userIcon.height = 32;
-        currentPic = data;
+        hasPic = true;
+        $("body", doc).append("<style>.d365shell-c-user-account-avatar { background-image: url(" + data + ") !important; }</style>")
         skipSend || Microsoft.Dynamics.NAV.InvokeExtensibilityMethod("SavePicture", [data]);
     }
 
-    window.SendPicture = function(picture) {
+    window.SendPicture = function (picture) {
         applyPicture(picture, true);
     }
 
@@ -30,6 +27,9 @@
             var video = doc.getElementById("vjeko-com-video");
             var overlay = doc.getElementById("vjeko-com-overlay");
             var canvas = doc.getElementById('vjeko-com-canvas');
+
+            if (hasPic)
+                video.classList.add("d365shell-c-user-account-avatar");
 
             function stopStream() {
                 var stream = video.srcObject;
@@ -76,28 +76,25 @@
         });
     };
 
-    var observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-            if (mutation.type === "childList") {
-                for (var i = 0; i < mutation.addedNodes.length; i++) {
-                    var node = mutation.addedNodes[i];
-                    if (node.tagName === "DIV" && node.classList.contains("current-user-ctxmenu-container")) {
-                        node.querySelector("div.userimage-clip")
-                            .addEventListener("click", showUI);
-                        if (currentPic) {
-                            var pic = node.querySelector("img.user-info-image");
-                            pic.src = currentPic;
-                            pic.width = 56;
-                            pic.height = 56;
-                        }
-                    }
-                }
-            }
-        });
+    $(document).ready(function () {
+        setTimeout(function () {
+            var menu = doc.querySelector("div.d365shell-c-user-account-menu-items");
+            menu.style.width = "300px";
+
+            var button = menu.querySelector("button");
+            var details = menu.querySelector(".user-details");
+
+            details.style.display = "flex";
+            details.style.flexFlow = "column";
+            details.style.justifyContent = "center";
+
+            var newDiv = doc.createElement("div");
+            newDiv.style.display = "flex";
+            newDiv.style.padding = "4px";
+            newDiv.innerHTML = "<div style=\"width: 56px !important; height: 56px !important\; margin: 8px;\" class=\"d365shell-c-user-account-avatar\"></div>";
+            newDiv.addEventListener("click", showUI);
+            newDiv.appendChild(details);
+            menu.insertBefore(newDiv, button);
+        }, 1000);
     });
-    observer.observe(
-        doc.body,
-        {
-            childList: true
-        });
 })(jQuery);
